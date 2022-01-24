@@ -1,7 +1,20 @@
 const main = () => {
-  const apiURL = window.location.host;
+  const apiURL = "http://" + window.location.host;
   const urlInput = document.querySelector("#urlText");
   const button = document.querySelector("#button");
+  const tr = document.querySelector("#tr");
+  const table = document.querySelector("#table");
+
+  deleteButton.onclick = async () => {
+    await fetch(apiURL + "/delete", {
+      body: JSON.stringify(deleteButton.id),
+      headers: {
+        "content-type": "application/json",
+      },
+      method: "POST",
+    });
+  };
+
   button.addEventListener("click", async () => {
     const url = urlInput.value;
     const body = { url };
@@ -12,8 +25,8 @@ const main = () => {
         "content-type": "application/json",
       },
     });
+
     const data = await response.json();
-    console.log(data);
   });
 };
 window.addEventListener("load", main);
