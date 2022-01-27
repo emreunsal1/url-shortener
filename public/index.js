@@ -1,19 +1,46 @@
-const main = () => {
-  const apiURL = "http://" + window.location.host;
-  const urlInput = document.querySelector("#urlText");
-  const button = document.querySelector("#button");
-  const tr = document.querySelector("#tr");
-  const table = document.querySelector("#table");
+const apiURL = window.location.origin;
+const urlInput = document.querySelector("#urlText");
+const button = document.querySelector("#button");
+const urlsWrapper = document.querySelector("#urls-wrapper");
 
-  deleteButton.onclick = async () => {
-    await fetch(apiURL + "/delete", {
-      body: JSON.stringify(deleteButton.id),
-      headers: {
-        "content-type": "application/json",
-      },
-      method: "POST",
-    });
-  };
+const createSlugUrl = (slug) => `${apiURL}/${slug}`;
+
+const showList = () => {
+  const localStrogeArray = JSON.parse(localStorage.getItem("shortsLink"));
+
+  urlsWrapper.innerHTML = "";
+  localStrogeArray.forEach((slug) => {
+    const wrapper = document.createElement("div");
+    const slugUrlElement = document.createElement("a");
+    const button = document.createElement("div");
+
+    slugUrlElement.innerHTML = createSlugUrl(slug);
+    slugUrlElement.href = createSlugUrl(slug);
+
+    button.innerHTML = "Delete";
+    button.onclick = () => {
+      console.log(`sktim: ${slug}`);
+    };
+
+    wrapper.appendChild(slugUrlElement);
+    wrapper.appendChild(button);
+
+    urlsWrapper.appendChild(wrapper);
+  });
+};
+const localAddNewItem = (slug) => {
+  const slugArray = JSON.parse(localStorage.getItem("shortsLink"));
+  const ifexist = slugArray.find((item) => item === slug);
+  !ifexist && slugArray.push(slug);
+  localStorage.setItem("shortsLink", JSON.stringify(slugArray));
+};
+
+const main = () => {
+  if (!localStorage.getItem("shortsLink")) {
+    localStorage.setItem("shortsLink", JSON.stringify([]));
+  }
+
+  showList();
 
   button.addEventListener("click", async () => {
     const url = urlInput.value;
@@ -25,8 +52,9 @@ const main = () => {
         "content-type": "application/json",
       },
     });
-
     const data = await response.json();
+    localAddNewItem(data.slug);
+    showList();
   });
 };
 window.addEventListener("load", main);
