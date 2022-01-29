@@ -1,13 +1,14 @@
 const mongoose = require("mongoose");
 const urlSchema = new mongoose.Schema({
+  name: String,
   url: String,
   slug: String,
 });
 const urlModel = mongoose.model("url", urlSchema);
 
-const addUrl = async (url, slug) => {
+const addUrl = async (name, url, slug) => {
   const exist = await urlModel.findOne({ url }).exec();
-  return exist || urlModel.create({ url, slug });
+  return exist || urlModel.create({ name, url, slug });
 };
 
 const getUrlBySlug = (slug) => {

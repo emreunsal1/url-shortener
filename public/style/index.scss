@@ -1,0 +1,32 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+}
+.add-link {
+  input {
+    background-color: aqua;
+  }
+  button {
+    background-color: aquamarine;
+  }
+}
+
+.urls-wrapper {
+  width: 100%;
+  .list-item {
+    display: flex;
+
+    justify-content: space-around;
+    a {
+      text-decoration: none;
+    }
+    .delete-button {
+      cursor: pointer;
+      background-color: aqua;
+      margin-left: 10px;
+    }
+  }
+}

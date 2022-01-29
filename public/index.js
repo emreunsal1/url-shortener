@@ -2,6 +2,7 @@ const apiURL = window.location.origin;
 const urlInput = document.querySelector("#urlText");
 const button = document.querySelector("#button");
 const urlsWrapper = document.querySelector("#urls-wrapper");
+const urlNameInput = document.querySelector("#urlName");
 
 const createSlugUrl = (slug) => `${apiURL}/${slug}`;
 
@@ -10,22 +11,28 @@ const showList = () => {
 
   urlsWrapper.innerHTML = "";
   localStrogeArray.forEach((slug) => {
-    const wrapper = document.createElement("div");
+    const container = document.createElement("div");
     const slugUrlElement = document.createElement("a");
     const button = document.createElement("div");
 
+    container.className = "list-item";
     slugUrlElement.innerHTML = createSlugUrl(slug);
     slugUrlElement.href = createSlugUrl(slug);
 
     button.innerHTML = "Delete";
+    button.className = "delete-button";
+    button.id = slug;
     button.onclick = () => {
-      console.log(`sktim: ${slug}`);
+      const localStrogeArray = JSON.parse(localStorage.getItem("shortsLink"));
+      const newList = localStrogeArray.filter((slug) => slug !== button.id);
+      localStorage.setItem("shortsLink", JSON.stringify(newList));
+      showList();
     };
+    container.appendChild();
+    container.appendChild(slugUrlElement);
+    container.appendChild(button);
 
-    wrapper.appendChild(slugUrlElement);
-    wrapper.appendChild(button);
-
-    urlsWrapper.appendChild(wrapper);
+    urlsWrapper.appendChild(container);
   });
 };
 const localAddNewItem = (slug) => {
@@ -44,7 +51,8 @@ const main = () => {
 
   button.addEventListener("click", async () => {
     const url = urlInput.value;
-    const body = { url };
+    const urlName = urlNameInput.value;
+    const body = { url, urlName };
     const response = await fetch(`${apiURL}/api/url`, {
       body: JSON.stringify(body),
       method: "POST",

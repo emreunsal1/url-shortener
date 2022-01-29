@@ -1,0 +1,2 @@
+*,*::before,*::after{-webkit-box-sizing:border-box;box-sizing:border-box}.add-link input{background-color:aqua}.add-link button{background-color:aquamarine}.urls-wrapper{width:100%}.urls-wrapper .list-item{display:-webkit-box;display:-ms-flexbox;display:flex;-ms-flex-pack:distribute;justify-content:space-around}.urls-wrapper .list-item a{text-decoration:none}.urls-wrapper .list-item .delete-button{cursor:pointer;background-color:aqua;margin-left:10px}
+/*# sourceMappingURL=index.css.map */

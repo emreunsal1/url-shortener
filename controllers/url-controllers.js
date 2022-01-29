@@ -2,9 +2,9 @@ const { addUrl, getUrlBySlug } = require("../models/url");
 const { nanoid } = require("nanoid");
 
 const addUrlController = async (req, res) => {
-  const { url } = req.body;
+  const { urlName, url } = req.body;
   const slug = nanoid(5);
-  const data = await addUrl(url, slug);
+  const data = await addUrl(urlName, url, slug);
   res.send(data);
 };
 
