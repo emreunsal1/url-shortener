@@ -1,10 +1,13 @@
-const { addUrl, getUrlBySlug } = require("../models/url");
+const { addUrl, getUrlBySlug, getUrlsBySlugs } = require("../models/url");
 const { nanoid } = require("nanoid");
 
 const addUrlController = async (req, res) => {
-  const { urlName, url } = req.body;
+  const { url } = req.body;
   const slug = nanoid(5);
-  const data = await addUrl(urlName, url, slug);
+  const data = await addUrl(url, slug);
+  if (data.error) {
+    return res.sendStatus(400);
+  }
   res.send(data);
 };
 
@@ -13,7 +16,13 @@ const redirectUrlController = async (req, res) => {
   if (slug == "favicon.ico") return res.sendStatus(404);
 
   const data = await getUrlBySlug(slug);
-  res.redirect(data);
+  res.redirect(data.url);
 };
 
-module.exports = { addUrlController, redirectUrlController };
+const getSlugsInfo = async (req, res) => {
+  const { slugs } = req.query;
+  const data = await getUrlsBySlugs(slugs.split(","));
+  res.send(data);
+};
+
+module.exports = { addUrlController, redirectUrlController, getSlugsInfo };
