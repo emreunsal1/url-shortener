@@ -3,6 +3,7 @@ const { dbInit } = require("./db");
 const {
   addUrlController,
   redirectUrlController,
+  getSlugsInfo,
 } = require("./controllers/url-controllers");
 
 dbInit();
@@ -13,9 +14,6 @@ app.use(express.json());
 app.use("/", express.static("public"));
 app.post("/api/url", addUrlController);
 app.get("/:slug", redirectUrlController);
-app.get("/api/url", (req, res) => {
-  const slugs = req.query.slugs.split(",");
-  res.send(slugs);
-});
+app.get("/api/url", getSlugsInfo);
 
 app.listen(3000, () => {});
