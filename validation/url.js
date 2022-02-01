@@ -5,8 +5,6 @@ const schema = Joi.object({
   slug: Joi.string().alphanum().required(),
 });
 
-const validateData = (data) => {
-  return schema.validateAsync(data);
-};
+const validateData = (data) => schema.validateAsync(data);
 
 module.exports = { validateData };
