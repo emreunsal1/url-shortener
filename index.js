@@ -18,5 +18,5 @@ app.post("/api/url", addUrlController);
 app.get("/:slug", redirectUrlController);
 app.get("/api/url", getSlugsInfo);
 
-const PORT = process.env.port || 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {});
