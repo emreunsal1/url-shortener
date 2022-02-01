@@ -9,8 +9,25 @@
   </head>
   <body>
     <div class="add-link">
-      <input id="urlText" placeholder="url" />
-      <button id="button">Yolla</button>
+      <div class="header">
+        <div class="img-container">
+          <img src="./style/chain.png" />
+        </div>
+      </div>
+      <div class="add-link-container">
+        <input id="urlText" placeholder="Kısaltmak için link yapıştırın" />
+        <button id="button">Kısaltın</button>
+      </div>
+      <div class="qr">
+        <div class="qr-container">
+          <div class="image-container">
+            <img id="qr-img" />
+          </div>
+          <div class="dowland-button">
+            <a id="dowlandQrCode" download></a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="urls-wrapper" class="urls-wrapper"></div>

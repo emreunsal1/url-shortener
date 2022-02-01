@@ -1,14 +1,17 @@
 const { addUrl, getUrlBySlug, getUrlsBySlugs } = require("../models/url");
 const { nanoid } = require("nanoid");
+const { generateQR } = require("../utils/qr");
 
 const addUrlController = async (req, res) => {
   const { url } = req.body;
   const slug = nanoid(5);
   const data = await addUrl(url, slug);
+  const qr = await generateQR(data.url);
+
   if (data.error) {
     return res.sendStatus(400);
   }
-  res.send(data);
+  res.send({ ...data, qr });
 };
 
 const redirectUrlController = async (req, res) => {

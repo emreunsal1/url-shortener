@@ -14,13 +14,12 @@ const validateUrl = (url) => {
 };
 
 const getLocalStrogeInfo = async () => {
+  console.log("çalıştı");
   const localItems = JSON.parse(localStorage.getItem("shortsLink")).join(",");
   let url = apiURL + "/api/url";
   url += "?slugs=" + localItems;
   const response = await fetch(url);
-
   const slugData = await response.json();
-
   return slugData;
 };
 
@@ -32,29 +31,49 @@ const showList = async () => {
     const container = document.createElement("div");
     const urlElement = document.createElement("a");
     const slugUrlElement = document.createElement("a");
-    const button = document.createElement("div");
+    const deleteButtonElement = document.createElement("div");
+    const copiedButtonElement = document.createElement("div");
+    const slugContainer = document.createElement("div");
 
     container.className = "list-item";
+
     urlElement.innerHTML = slug.url;
     urlElement.className = "old-url";
     urlElement.href = slug.url;
+
     slugUrlElement.innerHTML = createSlugUrl(slug);
     slugUrlElement.href = createSlugUrl(slug);
+    slugUrlElement.className = "slug-link";
 
-    button.innerHTML = "Delete";
-    button.className = "delete-button";
-    button.id = slug;
-    button.onclick = () => {
+    copiedButtonElement.className = "copied-button";
+    copiedButtonElement.innerHTML = `<div class="image-container"> <img src="https://img.icons8.com/fluency/48/000000/copy.png"/> </div>`;
+    copiedButtonElement.onclick = () => {
+      navigator.clipboard.writeText(slugUrlElement.href);
+      copiedButtonElement.innerHTML = `<div class="image-container"><img src="https://img.icons8.com/office/30/4a90e2/checked-checkbox--v1.png"/></div>`;
+      setTimeout(() => {
+        copiedButtonElement.innerHTML = `<div class="image-container"> <img src="https://img.icons8.com/fluency/48/000000/copy.png"/> </div>`;
+      }, 3000);
+    };
+
+    slugContainer.className = "slug-url-container";
+
+    deleteButtonElement.innerHTML = `<div class="image-container"> <img src="https://img.icons8.com/fluency/48/000000/filled-trash.png"/></div>`;
+    deleteButtonElement.className = "delete-button";
+    deleteButtonElement.id = slug.slug;
+    deleteButtonElement.onclick = () => {
       const localStrogeArray = JSON.parse(localStorage.getItem("shortsLink"));
-      const newList = localStrogeArray.filter((_slug) => _slug !== button.id);
+      const newList = localStrogeArray.filter(
+        (_slug) => _slug !== deleteButtonElement.id
+      );
       localStorage.setItem("shortsLink", JSON.stringify(newList));
+      getLocalStrogeInfo();
       showList();
     };
+    slugContainer.appendChild(slugUrlElement);
+    slugContainer.appendChild(copiedButtonElement);
     container.appendChild(urlElement);
-
-    container.appendChild(slugUrlElement);
-    container.appendChild(button);
-
+    container.appendChild(slugContainer);
+    container.appendChild(deleteButtonElement);
     urlsWrapper.appendChild(container);
   });
 };
@@ -94,7 +113,13 @@ const main = () => {
       },
     });
     const data = await response.json();
-    addSlugToLocalStroge(data.slug);
+    const qr = document.querySelector("#qr-img");
+    const dowlandElement = document.querySelector("#dowlandQrCode");
+    dowlandElement.href = data.qr;
+    dowlandElement.innerHTML = `<img src="https://img.icons8.com/fluency/48/000000/download.png"/>`;
+    qr.src = data.qr;
+    addSlugToLocalStroge(data._doc.slug);
+
     showList();
   });
 };
