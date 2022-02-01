@@ -14,7 +14,6 @@ const validateUrl = (url) => {
 };
 
 const getLocalStrogeInfo = async () => {
-  console.log("çalıştı");
   const localItems = JSON.parse(localStorage.getItem("shortsLink")).join(",");
   let url = apiURL + "/api/url";
   url += "?slugs=" + localItems;

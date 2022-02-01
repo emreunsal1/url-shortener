@@ -125,6 +125,9 @@ body {
     }
     .add-link-container {
       width: 100%;
+      button {
+        font-size: 13px;
+      }
     }
   }
 }
@@ -162,23 +165,23 @@ body {
 
     justify-content: space-between;
     .old-url {
-      width: 33.3333%;
+      width: 30%;
       overflow: hidden;
+      white-space: nowrap;
       text-overflow: ellipsis;
-      display: -webkit-box;
       margin-right: 30px;
-      -webkit-line-clamp: 1;
-      line-clamp: 1;
-      -webkit-box-orient: vertical;
       a {
       }
     }
     .slug-url-container {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      flex: 1;
       .slug-link {
         color: black;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
       .copied-button {
         cursor: pointer;
